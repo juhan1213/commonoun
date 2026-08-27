@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>보통명사 — 내가 회사를 차린다면?</title>
+<style>
+*{box-sizing:border-box}
+:root{
+  --bg:#090b0f;--bg2:#0d1016;--surface:#10141b;--surface-2:#151a22;--surface-3:#1b222c;
+  --text:#f4f5f7;--text-2:#c7cdd5;--muted:#7f8996;--line:rgba(255,255,255,.095);
+  --line-strong:rgba(255,255,255,.16);--accent:#ece7da;--accent-ink:#151617;
+  --glow:rgba(120,145,190,.16);--radius:24px;--shadow:0 30px 100px rgba(0,0,0,.38)
+}
+html,body{margin:0;min-height:100%;background:radial-gradient(circle at 50% 5%,#141a24 0,#0b0e13 32%,#080a0e 72%);color:var(--text);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Pretendard","Noto Sans KR","Segoe UI",sans-serif}
+body{overflow:hidden}
+button,input{font:inherit}
+button{cursor:pointer}
+#app{min-height:100dvh;display:grid;grid-template-rows:54px 1fr 32px;position:relative}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid var(--line);background:rgba(9,11,15,.7);backdrop-filter:blur(20px);z-index:3}
+.brand{font-size:13px;font-weight:900;letter-spacing:.15em}
+.step{font-size:10px;color:var(--muted);font-weight:750;letter-spacing:.08em}
+#stage{min-height:0;display:grid;place-items:center;padding:20px}
+.screen{width:min(1120px,100%);max-height:100%;display:grid;place-items:center;animation:rise .35s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.hero{text-align:center;padding:46px}
+.hero h1{margin:0;font-size:clamp(54px,7vw,86px);letter-spacing:-.055em;font-weight:950}
+.hero .sub{margin:14px 0 30px;color:var(--text-2);font-size:17px}
+.card{width:min(1040px,100%);padding:27px 32px;border:1px solid var(--line);border-radius:var(--radius);background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.018));box-shadow:var(--shadow);overflow:hidden}
+.setupCard{width:min(780px,100%)}
+.kicker,.eyebrow{color:var(--muted);font-size:10px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
+h2{margin:10px 0 10px;font-size:clamp(28px,3vw,38px);line-height:1.18;letter-spacing:-.035em}
+.desc{margin:0 0 22px;color:var(--text-2);font-size:13px;line-height:1.65}
+.input{width:100%;border:0;border-bottom:1px solid var(--line-strong);outline:0;background:transparent;color:var(--text);font-size:30px;font-weight:850;padding:14px 2px 12px}
+.input::placeholder{color:#4f5865}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.option,.choice{appearance:none;border:1px solid var(--line);background:rgba(255,255,255,.025);color:var(--text);border-radius:14px;text-align:left;transition:.16s ease}
+.option{padding:16px 17px;min-height:82px}
+.option:hover,.choice:hover{border-color:var(--line-strong);background:rgba(255,255,255,.055);transform:translateY(-1px)}
+.option b{display:block;margin-bottom:6px;font-size:13px}
+.option span{display:block;color:var(--muted);font-size:10px;line-height:1.45}
+.actions{margin-top:22px;display:flex;gap:10px;align-items:center;justify-content:flex-end}
+.primary,.ghost{border-radius:12px;padding:11px 16px;font-size:11px;font-weight:850;letter-spacing:.02em}
+.primary{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink)}
+.ghost{border:1px solid var(--line);background:transparent;color:var(--text-2)}
+.questionCard{padding:22px 26px}
+.qmeta{display:flex;justify-content:space-between;color:var(--muted);font-size:9px;font-weight:800}
+.progress{height:2px;background:rgba(255,255,255,.07);margin:10px 0 18px;overflow:hidden}
+.progress i{display:block;height:100%;background:#b9c0c9;transition:width .3s ease}
+.questionCopy{min-height:112px}
+.qtext{font-size:clamp(27px,3vw,37px);line-height:1.14;font-weight:900;letter-spacing:-.04em;margin:8px 0}
+.context{white-space:pre-line;color:var(--text-2);font-size:12px;line-height:1.5}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}
+.choice{min-height:100px;padding:13px 15px}
+.choice .letter{display:block;color:#697482;font-size:8px;font-weight:900;margin-bottom:7px}
+.choice strong{display:block;font-size:12px;line-height:1.32}
+.choice p{margin:6px 0 0;color:var(--muted);font-size:9.5px;line-height:1.4}
+.flash{text-align:center}
+.flash .big{font-size:clamp(45px,6vw,68px);font-weight:950;letter-spacing:-.055em}
+.flash .small{color:var(--text-2);font-size:13px;line-height:1.65}
+.timeline{display:flex;align-items:center;gap:16px;justify-content:center;color:#76808b;font-size:10px}
+.timeline span:not(:last-child)::after{content:"";display:inline-block;width:34px;height:1px;background:#333a44;margin-left:16px;vertical-align:middle}
+.resultCard{padding:19px 24px}
+.resultHero{padding-bottom:12px;border-bottom:1px solid var(--line)}
+.resultHero h2{margin:5px 0 2px}
+.company{color:var(--muted);font-size:10px}
+.metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin:11px 0}
+.metric{padding:9px;border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.02)}
+.metric span{display:block;color:var(--muted);font-size:8px;margin-bottom:5px}
+.metric b{font-size:15px}
+.typeBox{padding-top:10px}
+.typeName{font-size:34px;font-weight:950;letter-spacing:-.04em;margin:3px 0 2px}
+.typeSubtitle{margin:-1px 0 6px;color:#9fa8b3;font-size:11px;font-weight:750}
+.typeText{color:var(--text-2);font-size:10.5px;line-height:1.48}
+.traits{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.pill{padding:4px 7px;border-radius:999px;background:rgba(255,255,255,.045);color:#aeb6c0;font-size:8px}
+.review{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-height:480px;overflow:auto;margin-top:12px}
+.reviewRow{padding:9px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.02)}
+.reviewRow small{display:block;color:#697482;font-size:7.5px;margin-bottom:4px}
+.reviewRow b{display:block;font-size:10px;margin-bottom:3px}
+.reviewRow span{display:block;color:var(--muted);font-size:8.3px;line-height:1.35}
+.hiddenSequence{text-align:center}
+.quoteWall{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:18px 0}
+.quoteWall div{padding:14px;border:1px solid var(--line);border-radius:12px;color:var(--text-2);font-size:11px}
+.hiddenTitle{font-size:clamp(58px,9vw,100px);font-weight:950;letter-spacing:-.07em}
+.note{padding:10px;border-left:2px solid #6d7680;color:var(--muted);font-size:9px;line-height:1.5;text-align:left}
+footer{display:grid;place-items:center;color:#505866;font-size:8px;letter-spacing:.08em;border-top:1px solid var(--line)}
+
+/* v5.1/v5.2 setup fitting */
+.companySetup{width:min(690px,100%)}
+.companySetup h2{font-size:26px}
+.companySetup .input{font-size:22px}
+.industrySetup{width:min(820px,100%)}
+.industrySetup .option{min-height:62px;padding:10px 12px}
+.industrySetup .option b{font-size:11px}
+.industrySetup .option span{font-size:8.5px}
+
+/* v5.3 teacher feedback company archetype area */
+.caseLink{margin-top:8px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.018)}
+.caseHead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px}
+.caseHead span{color:var(--muted);font-size:8px;letter-spacing:.08em;text-transform:uppercase}
+.caseHead b{color:#d8dde3;font-size:9px;font-weight:750}
+.route{display:flex;align-items:center;flex-wrap:wrap;gap:5px}
+.route span{padding:5px 7px;border-radius:7px;background:rgba(255,255,255,.045);color:#d2d8df;font-size:9px;font-weight:700}
+.route i{color:#65707c;font-style:normal;font-size:9px}
+.caseLink p{margin:8px 0 0;color:#828d99;font-size:8.8px;line-height:1.45}
+
+/* ===== v5.4 GOLDEN-RATIO MODULAR SCALE =====
+   sqrt(phi) ≈ 1.272: two steps ≈ 1.618.
+*/
+:root{
+  --gr-0:10.2px;--gr-1:12.98px;--gr-2:16.51px;--gr-3:21px;--gr-4:26.71px;
+  --gr-5:33.98px;--gr-6:43.22px;--gr-7:54.98px;--gr-8:69.94px;
+  --gs-0:5px;--gs-1:8px;--gs-2:13px;--gs-3:21px;--gs-4:34px
+}
+@media(min-width:701px){
+  .brand{font-size:var(--gr-1)!important}.step,.qmeta{font-size:var(--gr-0)!important}.kicker{font-size:var(--gr-0)!important}
+  .hero h1{font-size:clamp(var(--gr-7),5.2vw,var(--gr-8))!important}.hero .sub{font-size:var(--gr-2)!important}
+  h2{font-size:clamp(var(--gr-4),2.35vw,var(--gr-5))!important}.desc{font-size:var(--gr-1)!important}.input{font-size:var(--gr-4)!important}
+  .option b{font-size:var(--gr-1)!important}.option span{font-size:var(--gr-0)!important}
+  .qtext{font-size:clamp(var(--gr-4),2.35vw,var(--gr-5))!important}.context{font-size:var(--gr-1)!important}
+  .choice strong{font-size:var(--gr-1)!important}.choice p{font-size:var(--gr-0)!important}
+  .flash .big{font-size:clamp(var(--gr-6),5vw,var(--gr-7))!important}.flash .small{font-size:var(--gr-1)!important}
+  .typeName{font-size:var(--gr-5)!important}.typeText,.typeSubtitle{font-size:var(--gr-0)!important}
+}
+
+/* v5.4 monopoly process */
+.marketPower{margin-top:9px;padding:10px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.015)}
+.marketPowerHead{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;margin-bottom:8px}
+.marketPowerHead span{color:#cdd3da;font-size:9px;font-weight:850;letter-spacing:.05em}
+.marketPowerHead em{color:#727d89;font-size:8px;font-style:normal;letter-spacing:.12em;white-space:nowrap}
+.marketFlow{display:grid;grid-template-columns:minmax(0,1fr) 18px minmax(0,1fr) 18px minmax(0,1fr) 18px minmax(0,1fr);align-items:stretch;gap:4px}
+.flowNode{min-width:0;padding:9px 10px;border-radius:10px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.06)}
+.flowNode small{display:block;margin-bottom:4px;color:#68737f;font-size:7.5px;font-weight:850;letter-spacing:.08em}
+.flowNode strong{display:block;color:#e3e7eb;font-size:10px;line-height:1.2}
+.flowNode p{margin:4px 0 0;color:#8f99a5;font-size:8.2px;line-height:1.32;word-break:keep-all}
+.flowArrow{display:grid;place-items:center;color:#596571;font-size:12px}
+.caseLink p{margin:0!important;color:#9ba5b0!important;font-size:9px!important;line-height:1.52!important;word-break:keep-all}
+
+@media(min-width:701px) and (max-height:760px){
+  .card{padding:13px 18px!important}.questionCard,.resultCard{padding:13px 16px!important}
+  .marketPower{margin-top:7px;padding:8px}.marketPowerHead{margin-bottom:6px}.flowNode{padding:6px 7px}
+  .flowNode p{font-size:7.4px;line-height:1.22}.caseLink{padding:7px 9px!important;margin-top:6px!important}.caseLink p{font-size:7.8px!important;line-height:1.35!important}
+  .metrics{margin:7px 0}.metric{padding:6px}.typeBox{padding-top:6px}.typeText{line-height:1.35}
+}
+@media(min-width:701px) and (max-width:920px){
+  .marketFlow{grid-template-columns:1fr 14px 1fr}.marketFlow .flowArrow:nth-of-type(4){display:none}
+}
+@media(max-width:700px){
+  body{overflow:auto}#app{height:auto;min-height:100dvh;grid-template-rows:50px 1fr 28px}#stage{padding:10px}
+  .card{padding:18px 15px;border-radius:16px}.grid2,.choices{grid-template-columns:1fr}
+  .questionCopy{min-height:0}.choice{min-height:72px}.metrics{grid-template-columns:repeat(2,1fr)}
+  .review{grid-template-columns:1fr}.industrySetup{width:calc(100% - 16px);margin:auto}.industrySetup .grid2{grid-template-columns:1fr 1fr;gap:7px}
+  .industrySetup .option{min-height:72px;padding:11px}.industrySetup .option b{font-size:12px}.industrySetup .option span{font-size:9px}
+  .marketPower{margin-top:12px;padding:11px}.marketPowerHead{display:block}.marketPowerHead em{display:block;margin-top:5px}
+  .marketFlow{display:grid;grid-template-columns:1fr;gap:5px}.flowArrow{transform:rotate(90deg);height:13px}.flowNode{padding:10px}
+  .flowNode strong{font-size:11px}.flowNode p{font-size:9px}.caseLink p{font-size:9px!important}
+}
+
+/* true viewport scaling for PC */
+@media(min-width:701px){
+  #app{--ui-scale:1;position:fixed;left:50%;top:50%;width:1440px;height:900px;min-height:0;transform:translate(-50%,-50%) scale(var(--ui-scale));transform-origin:center center}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="topbar"><div class="brand">보통명사</div><div class="step" id="stepLabel"></div></header>
+  <main id="stage"></main>
+  <footer>내가 회사를 차린다면?</footer>
+</div>
+<script>
+const stage=document.getElementById('stage');
+const stepLabel=document.getElementById('stepLabel');
+
+const S={
+  company:'',industry:'IT·소프트웨어',product:'',
+  answers:[],traits:{PRODUCT:0,GROWTH:0,BRAND:0,EFFICIENCY:0,PEOPLE:0,TRUST:0,OPEN:0,CONTROL:0,RISK:0,SOCIAL:0},q:0
+};
+const industryMap={
+  'IT·소프트웨어':'앱·플랫폼·AI·온라인 서비스','전자제품':'기기·생활전자·스마트 제품',
+  '생활제품':'소비재·생활용품','콘텐츠':'게임·영상·음악·미디어','식품':'식음료·프랜차이즈','기타':'직접 정의한 분야'
+};
+
+const questions=[
+{year:'설립 1개월 차',title:'첫 3,000만 원',text:'회사 계좌에는 3,000만 원이 있다.\n첫 제품은 일단 작동한다. 하지만 아직 만족스럽지는 않다.\n지금 가장 먼저 큰돈을 쓴다면?',choices:[
+['제품을 더 다듬는다','출시를 몇 달 미뤄도 된다. 가장 아쉬운 부분부터 다시 만든다.',{PRODUCT:3,TRUST:1}],
+['일단 고객을 모은다','현재 제품으로 먼저 시장 반응을 만든다. 약 1,500만 원을 광고와 홍보에 쓴다.',{GROWTH:3,BRAND:1,RISK:1}],
+['원가부터 줄인다','공급처와 제작 방식을 다시 검토해 제품 하나를 팔 때 남는 돈을 늘린다.',{EFFICIENCY:3}],
+['사람을 한 명 고용한다','대표 혼자 모든 일을 하는 구조부터 끝낸다.',{PEOPLE:3,PRODUCT:1}]]},
+{year:'설립 5개월 차',title:'첫 가격',text:'제품 하나를 만드는 데 약 28,000원이 든다.\n비슷한 경쟁 제품은 보통 55,000~65,000원이다.',choices:[
+['39,000원','초반에는 이익보다 고객 확보에 집중한다.',{GROWTH:3,RISK:1}],
+['59,000원','시장 평균 수준으로 시작해 가격 자체를 변수로 만들지 않는다.',{EFFICIENCY:2,TRUST:1}],
+['79,000원','디자인·서비스·포장을 강화해 처음부터 프리미엄으로 자리 잡는다.',{BRAND:3,PRODUCT:1}],
+['39,000원 / 89,000원 두 종류','기본형과 고급형을 나눠 서로 다른 고객을 동시에 노린다.',{EFFICIENCY:2,GROWTH:1,BRAND:1}]]},
+{year:'설립 8개월 차',title:'첫 직원',text:'현재 회사가 감당할 수 있는 직원은 딱 한 명이다.\n네 명의 선택지가 있다.',choices:[
+['경력 7년 실무자','당장 전력감이다. 대신 원하는 급여가 가장 높다.',{PRODUCT:2,PEOPLE:1,EFFICIENCY:-1}],
+['포트폴리오가 뛰어난 신입','가르칠 시간이 필요하지만 성장 가능성이 크다.',{PEOPLE:3,RISK:1}],
+['영업 경험이 많은 지원자','제품 이해도는 평범하지만 고객을 확보하는 능력이 확실하다.',{GROWTH:3}],
+['아직 뽑지 않는다','비용을 아끼고 대표가 몇 달 더 직접 처리한다.',{EFFICIENCY:3,CONTROL:1}]]},
+{year:'설립 1년 차 · 누적 판매 8,300개',title:'첫 번째 문제',text:'판매된 제품 중 약 3%에서 작은 결함이 발견됐다.\n안전 문제는 없지만 일부 고객은 분명 불편할 수 있다.',choices:[
+['전체 고객에게 먼저 알리고 무상 교환한다','비용은 크지만 문제를 숨기지 않는다.',{TRUST:4,EFFICIENCY:-1}],
+['문제가 발생한 고객에게만 교환한다','실제 피해가 있는 고객에게 집중한다.',{TRUST:2,EFFICIENCY:2}],
+['다음 생산분부터 개선한다','현재 판매는 유지하고 이후 제품부터 해결한다.',{GROWTH:2,EFFICIENCY:2,TRUST:-1}],
+['별도 개선 프로그램을 제공한다','전면 교환 대신 수리·업데이트·부품 교체 방식으로 대응한다.',{PRODUCT:2,EFFICIENCY:2,TRUST:1}]]},
+{year:'설립 3년 차 · 직원 23명',title:'주문이 갑자기 세 배가 됐다',text:'대형 크리에이터가 제품을 소개하면서 주문이 폭증했다.\n현재 생산량으로는 전부 공급할 수 없다.',choices:[
+['외부 생산업체를 추가한다','품질 관리가 어려워질 수 있지만 지금의 수요를 놓치지 않는다.',{GROWTH:3,RISK:2,PRODUCT:-1}],
+['배송 지연을 안내하고 기존 생산량을 유지한다','성장 속도보다 품질을 우선한다.',{PRODUCT:3,TRUST:2}],
+['자금을 빌려 생산설비를 늘린다','위험을 감수하고 장기 생산능력을 확보한다.',{GROWTH:3,RISK:3}],
+['예약 주문으로 전환한다','실제 수요를 먼저 확인하고 단계적으로 만든다.',{EFFICIENCY:3,TRUST:1}]]},
+{year:'설립 3년 차',title:'대형 유통사가 연락해왔다',text:'전국적인 유통사가 제안한다.\n“판매량은 크게 늘려드릴 수 있습니다. 대신 소비자가격을 지금보다 15% 낮춰주세요.”',choices:[
+['수락한다','마진은 줄어도 전국 유통망을 확보한다.',{GROWTH:3,BRAND:1,EFFICIENCY:-1}],
+['일부 제품만 공급한다','온라인 판매와 유통망을 동시에 유지한다.',{GROWTH:2,CONTROL:1,EFFICIENCY:1}],
+['유통사용 모델을 따로 만든다','가격을 낮추는 대신 전용 제품을 별도로 설계한다.',{PRODUCT:1,BRAND:2,EFFICIENCY:2}],
+['거절한다','고객과 직접 관계를 유지하는 것이 더 중요하다.',{CONTROL:3,TRUST:1}]]},
+{year:'설립 4년 차',title:'경쟁사가 따라왔다',text:'비슷한 기능의 경쟁 제품이 출시됐다.\n가격은 당신보다 20% 저렴하다.',choices:[
+['가격을 같이 낮춘다','시장점유율을 지킨다.',{GROWTH:3,EFFICIENCY:-1}],
+['다음 세대 제품 출시를 앞당긴다','가격 대신 기술 격차를 만든다.',{PRODUCT:4,RISK:1}],
+['브랜드 광고를 강화한다','“비슷해 보여도 같은 제품은 아니다.”',{BRAND:4,GROWTH:1}],
+['현재 전략을 유지한다','경쟁사에 반응하기보다 기존 고객에게 집중한다.',{TRUST:2,CONTROL:1,EFFICIENCY:1}]]},
+{year:'설립 4년 차',title:'고객 데이터',text:'서비스 사용 데이터를 분석하면 추천 기능의 정확도를 크게 높일 수 있다.',choices:[
+['꼭 필요한 데이터만 수집한다','기능 향상이 조금 느려도 최소한만 사용한다.',{TRUST:4,CONTROL:-1}],
+['동의한 고객의 상세 데이터를 사용한다','설정 화면에서 고객이 직접 결정하게 한다.',{TRUST:3,PRODUCT:1}],
+['데이터 제공 고객에게 혜택을 준다','포인트나 추가 기능을 제공한다.',{GROWTH:1,EFFICIENCY:2,TRUST:1}],
+['데이터 분석 자체를 새 사업으로 키운다','데이터 기반 서비스를 핵심 경쟁력으로 만든다.',{GROWTH:3,RISK:2,CONTROL:1}]]},
+{year:'설립 6년 차 · 직원 118명',title:'다른 회사가 규격 공개를 요구한다',text:'여러 기업이 당신 회사 제품과 호환되는 제품을 만들고 싶다고 한다.',choices:[
+['규격을 공개한다','누구든 호환 제품을 만들 수 있게 한다.',{OPEN:4,GROWTH:2,CONTROL:-2}],
+['인증받은 기업에게만 공개한다','생태계는 넓히되 품질 기준을 유지한다.',{OPEN:3,CONTROL:1,TRUST:1,BRAND:1}],
+['사용료를 받고 라이선스한다','규격 자체를 사업으로 만든다.',{EFFICIENCY:2,GROWTH:2,OPEN:1,BRAND:1}],
+['공개하지 않는다','핵심 경험은 자사 제품 안에서만 제공한다.',{CONTROL:4,BRAND:1}]]},
+{year:'설립 6년 차',title:'50억 원 투자 제안',text:'회사는 현재도 흑자다.\n투자사는 지분 20%, 이사회 참여, 3년 안에 매출 5배 성장을 조건으로 50억 원을 제안했다.',choices:[
+['전부 받는다','지금이 시장을 장악할 기회라고 본다.',{GROWTH:4,RISK:3}],
+['규모와 지분을 절반으로 협상한다','성장하면서도 경영권을 최대한 유지한다.',{GROWTH:2,CONTROL:2,EFFICIENCY:1}],
+['돈은 받되 성장 조건을 뺀다','자본은 필요하지만 속도는 직접 정한다.',{CONTROL:3,GROWTH:1}],
+['받지 않는다','회사가 버는 돈으로 계속 성장한다.',{CONTROL:3,EFFICIENCY:2,RISK:-1}]]},
+{year:'설립 7년 차',title:'해외 주문이 들어오기 시작한다',text:'해외 고객 비중이 어느새 8%가 됐다.\n본격적인 해외 진출을 한다면?',choices:[
+['현지 유통업체와 계약한다','가장 빠르게 시장에 진입한다.',{GROWTH:3,OPEN:1}],
+['온라인 판매부터 직접 시험한다','작은 규모로 수요를 확인한다.',{EFFICIENCY:2,RISK:1,GROWTH:1}],
+['현지 기업과 합작회사를 만든다','비용과 위험을 나누고 현지화한다.',{OPEN:3,GROWTH:2}],
+['국내 사업부터 더 안정시킨다','해외 진출을 2~3년 미룬다.',{EFFICIENCY:2,TRUST:1,RISK:-1}]]},
+{year:'설립 8년 차 · 직원 300명',title:'결정이 너무 느려졌다',text:'보고 절차가 늘어나 작은 결정 하나에도 시간이 오래 걸리기 시작했다.',choices:[
+['팀장에게 예산과 인사 권한까지 넘긴다','각 팀이 작은 회사처럼 움직이게 한다.',{PEOPLE:3,OPEN:2,CONTROL:-1}],
+['대표 직속 전략실을 만든다','중요한 결정을 다시 한곳에 모은다.',{CONTROL:4}],
+['사업부 단위로 회사를 나눈다','제품마다 독립적인 조직을 만든다.',{EFFICIENCY:2,PEOPLE:1,OPEN:1}],
+['전문 COO를 영입한다','대표는 제품과 장기 전략에 집중한다.',{PEOPLE:2,PRODUCT:2,EFFICIENCY:1}]]},
+{year:'설립 10년 차 · 직원 1,240명',title:'최대 경쟁사를 살 수 있다',text:'시장점유율 14%인 경쟁사가 매각을 검토하고 있다.\n당신 회사는 인수할 자금이 충분하다.',choices:[
+['인수하고 하나의 브랜드로 합친다','고객과 기술을 전부 흡수한다.',{GROWTH:3,BRAND:3,CONTROL:2,RISK:1}],
+['인수하지만 브랜드는 그대로 둔다','독립 브랜드로 운영하며 시장을 넓힌다.',{GROWTH:3,BRAND:1,OPEN:1}],
+['필요한 기술만 산다','규모 확장보다 필요한 자산에 집중한다.',{PRODUCT:2,EFFICIENCY:3}],
+['인수하지 않는다','경쟁이 있는 시장이 오히려 건강하다고 본다.',{OPEN:3,TRUST:1,CONTROL:-1}]]},
+{year:'설립 11년 차',title:'사람들이 이상한 말을 쓰기 시작한다',text:'최근 온라인에서 이런 표현이 자주 보인다.\n“그거 BRAND해봐.”\n경쟁사 제품을 쓰는 사람들조차 같은 종류의 서비스를 당신 브랜드 이름으로 부르기 시작했다.\n법무팀은 상표를 관리해야 한다고 말하고, 마케팅팀은 최고의 기회라고 말한다.',choices:[
+['공식 브랜드 표기를 적극 관리한다','제품명과 회사 이름이 명확히 구분되도록 한다.',{BRAND:2,CONTROL:3,TRUST:1}],
+['사람들이 쓰는 표현을 굳이 막지 않는다','자연스럽게 퍼지는 문화를 그대로 둔다.',{BRAND:3,OPEN:3}],
+['다른 회사에도 브랜드 사용을 허가한다','인증 제품에는 이름을 사용할 수 있게 한다.',{OPEN:4,BRAND:3,CONTROL:1}],
+['그 표현 자체를 광고 캠페인으로 만든다','사람들이 이미 쓰는 말을 브랜드 자산으로 활용한다.',{BRAND:5,GROWTH:2,RISK:1}]]},
+{year:'설립 12년 차',title:'마지막 100억 원',text:'회사는 안정적으로 돈을 벌고 있다.\n올해 계획에 없던 100억 원의 여유 자금이 생겼다.\n대표인 당신이 최종적으로 결정한다.',choices:[
+['차세대 제품 연구에 투자한다','지금 잘되는 사업보다 앞으로 필요한 기술을 준비한다.',{PRODUCT:4}],
+['새로운 시장에 진출한다','아직 회사가 하지 않는 사업을 시작한다.',{GROWTH:4,RISK:2}],
+['직원과 고객에게 돌린다','성과보상·근무환경·가격혜택에 사용한다.',{PEOPLE:3,TRUST:3}],
+['회사 밖에 투자한다','장학사업·공공 프로젝트·사회문제 해결 사업을 시작한다.',{SOCIAL:5,TRUST:2}]]}
+];
+
+const types=[
+{name:'애플형 CEO',subtitle:'제품·생태계 결합형',score:t=>t.PRODUCT*1.05+t.BRAND*.7+t.CONTROL*.65+t.TRUST*.15,tags:['제품 완성도','프리미엄','생태계'],
+path:[['제품 차별화','완성도와 경험으로 대체재와 거리를 만든다.'],['브랜드 선호','가격 외의 이유로 같은 브랜드를 다시 고른다.'],['생태계 결합','제품과 서비스가 서로 연결되며 사용성이 커진다.'],['전환비용 상승','다른 체계로 옮길 때 포기해야 할 것이 많아진다.']],
+text:'당신은 제품 하나의 성능뿐 아니라 여러 제품과 서비스가 함께 작동하는 경험을 중요하게 봤습니다. 완성도와 브랜드를 동시에 끌어올리고 핵심 경험을 자사 생태계 안에 묶는 선택이 반복되었습니다.',
+caseWhy:'애플은 개별 기기의 경쟁력뿐 아니라 기기·서비스가 연결되는 생태계를 통해 브랜드 선호를 강화하는 대표적 사례입니다. 한 번 여러 제품과 서비스를 함께 사용하기 시작하면 연결된 경험 자체가 편의가 되어 다른 체계로 옮기는 비용이 커질 수 있습니다. 당신 역시 제품 완성도와 통제된 생태계를 중시하는 선택이 반복되어 이 유형과 가깝습니다.'},
+{name:'쿠팡형 CEO',subtitle:'속도·유통망 확장형',score:t=>t.GROWTH*1.2+t.EFFICIENCY*.65+t.RISK*.55,tags:['속도','규모','유통망'],
+path:[['공격적 투자','물류·공급 능력을 빠르게 크게 만든다.'],['접근성 확대','더 많은 고객이 더 쉽게 서비스를 이용한다.'],['반복 이용','빠르고 익숙한 경험이 구매 습관으로 굳어진다.'],['생활 인프라화','다른 선택지를 찾기보다 먼저 확인하는 서비스가 된다.']],
+text:'당신은 기회가 왔을 때 기다리기보다 빠르게 규모를 키웠습니다. 공급·유통·해외 진출처럼 고객이 더 쉽게 접근할 수 있는 구조에 투자하면서 시장의 일상적인 선택지가 되는 방향으로 성장했습니다.',
+caseWhy:'쿠팡은 물류 역량과 빠른 배송 경험에 대규모로 투자해 이용 편의를 경쟁력으로 만든 사례와 연결됩니다. 편리함을 반복해서 경험한 고객에게 서비스가 일상적인 구매 경로가 되면 다른 선택지를 비교하는 빈도도 줄어듭니다. 당신 역시 성장 속도·유통망·접근성을 우선했기 때문에 이 유형에 가깝습니다.'},
+{name:'코카콜라형 CEO',subtitle:'브랜드 기억 선점형',score:t=>t.BRAND*1.4+t.GROWTH*.4+t.TRUST*.2,tags:['브랜드 기억','인지도','대중성'],
+path:[['반복 노출','고객이 여러 장소와 상황에서 이름을 접한다.'],['이미지 고정','제품 특징보다 브랜드 이미지가 먼저 기억된다.'],['최초상기','제품군을 떠올릴 때 특정 이름이 먼저 나온다.'],['카테고리 대표성','경쟁사가 있어도 기준점 역할을 하는 브랜드가 된다.']],
+text:'당신은 제품 기능만큼 사람들이 이름을 얼마나 빨리 떠올리는지를 중요하게 봤습니다. 광고·유통·언어를 통해 브랜드의 기억 점유율을 키워, 특정 제품군을 생각할 때 먼저 떠오르는 이름을 만드는 방향입니다.',
+caseWhy:'코카콜라는 매우 넓은 유통과 반복적인 브랜드 노출을 통해 음료 카테고리에서 강한 최초상기 이미지를 만든 사례로 연결할 수 있습니다. 이런 브랜드는 시장을 전부 소유하지 않아도 소비자가 제품군을 떠올릴 때 기준점이 됩니다. 당신 역시 인지도와 브랜드 기억을 키우는 선택이 강했습니다.'},
+{name:'다이소형 CEO',subtitle:'가격·접근성 장악형',score:t=>t.EFFICIENCY*1.15+t.GROWTH*.55+t.TRUST*.25-t.RISK*.05,tags:['가격 경쟁력','접근성','운영 효율'],
+path:[['원가 효율','낮은 가격을 유지할 수 있는 운영 구조를 만든다.'],['진입장벽 하락','고객이 가격 부담 없이 쉽게 선택한다.'],['반복 구매','필요한 물건이 생길 때 습관적으로 방문한다.'],['생활형 대표성','특정 가격·생활용품 시장의 기본 선택지가 된다.']],
+text:'당신은 높은 가격보다 많은 고객이 부담 없이 선택할 수 있는 구조를 만들었습니다. 비용을 정교하게 관리하면서 접근성을 넓혀, 필요할 때 자연스럽게 떠오르는 생활형 브랜드가 되는 방향입니다.',
+caseWhy:'다이소는 낮은 가격대와 폭넓은 상품 구성을 결합해 “필요한 생활용품을 찾으러 가는 곳”이라는 강한 이용 목적을 만든 사례와 연결됩니다. 가격 부담이 낮고 접근이 쉬우면 고객의 방문 빈도가 높아지고, 반복 구매가 브랜드 습관으로 이어질 수 있습니다. 당신도 효율과 접근성을 먼저 확보하는 선택이 많아 이 방향과 유사합니다.'},
+{name:'성심당형 CEO',subtitle:'지역·신뢰 대표 브랜드형',score:t=>t.TRUST*1.0+t.PEOPLE*.55+t.PRODUCT*.45+t.BRAND*.38+t.SOCIAL*.35,tags:['신뢰','지역 대표성','입소문'],
+path:[['제품 신뢰','꾸준한 품질로 “여기는 믿을 수 있다”를 만든다.'],['지역 관계','지역과 브랜드의 이미지가 서로 연결된다.'],['입소문·재방문','고객 경험이 방문 추천과 반복 구매로 이어진다.'],['지역 최초상기','그 지역의 해당 분야를 떠올릴 때 먼저 생각난다.']],
+text:'당신은 무리하게 전국을 장악하기보다 제품의 신뢰와 고객 관계를 꾸준히 쌓는 선택을 반복했습니다. 그 결과 특정 지역이나 시장에서 “그 분야라면 먼저 떠오르는 곳”이 되는 강한 대표 브랜드로 성장하는 방향입니다.',
+caseWhy:'성심당은 대전이라는 지역성과 제품에 대한 신뢰가 강하게 결합된 대표 브랜드 사례로 설명하기 좋습니다. 단순히 빵을 판매하는 곳을 넘어 지역을 방문할 때 함께 떠올리는 장소가 되면, 지역 시장에서 경쟁사와 다른 수준의 대표성을 갖게 됩니다. 당신 역시 품질·신뢰·사람·지역적 관계를 우선했기 때문에 이런 방식의 브랜드 독점에 가장 가깝습니다.'},
+{name:'유튜브형 CEO',subtitle:'플랫폼·네트워크 효과형',score:t=>t.GROWTH*.85+t.CONTROL*.75+t.OPEN*.45+t.BRAND*.35,tags:['플랫폼','네트워크 효과','습관'],
+path:[['사용자 증가','시청자와 이용자가 빠르게 모인다.'],['공급자 증가','사람이 많아질수록 창작자와 콘텐츠도 늘어난다.'],['네트워크 효과','콘텐츠가 늘수록 다시 더 많은 이용자가 모인다.'],['시장 관문화','영상 활동의 기본 출발점처럼 인식된다.']],
+text:'당신은 제품 하나보다 사람들이 모이고 다시 돌아오는 구조를 만드는 쪽을 선택했습니다. 이용자와 공급자가 함께 늘수록 플랫폼 가치가 커지고, 결국 해당 활동의 기본적인 입구처럼 자리 잡는 방향입니다.',
+caseWhy:'유튜브 같은 플랫폼은 시청자가 많을수록 창작자가 참여할 이유가 커지고, 콘텐츠가 많아질수록 다시 시청자가 늘어나는 네트워크 효과가 핵심입니다. 이런 순환이 충분히 커지면 경쟁 서비스가 존재해도 이용자는 가장 콘텐츠가 많은 플랫폼부터 찾게 됩니다. 당신의 선택에서도 성장·플랫폼 통제·개방된 참여 구조가 함께 높게 나타났습니다.'},
+{name:'안드로이드형 CEO',subtitle:'개방 생태계 확산형',score:t=>t.OPEN*1.4+t.GROWTH*.35+t.TRUST*.15-t.CONTROL*.15,tags:['개방 표준','호환성','파트너'],
+path:[['규격 개방','외부 기업이 쉽게 참여할 수 있게 한다.'],['파트너 증가','다양한 제조사와 서비스가 같은 생태계에 들어온다.'],['호환성 확대','지원 제품이 많아져 이용자 선택 폭이 넓어진다.'],['사실상 표준','시장 전체가 해당 규격을 기준으로 움직이기 시작한다.']],
+text:'당신은 모든 것을 혼자 통제하기보다 다른 기업이 함께 참여할 수 있도록 규격과 생태계를 열었습니다. 자사 제품의 점유율만 키우기보다 표준 자체가 널리 퍼지는 방식으로 영향력이 커지는 방향입니다.',
+caseWhy:'안드로이드 생태계는 여러 제조사와 기기가 참여할 수 있는 개방적인 확산 구조를 설명하기 좋은 사례입니다. 하나의 회사가 모든 제품을 직접 만들지 않아도 참여 기업이 늘면 호환성과 시장 범위가 커지고, 그 규격 자체가 사실상의 표준이 될 수 있습니다. 당신도 독점적인 소유보다 개방과 파트너 확대를 선택해 이런 유형에 가깝습니다.'},
+{name:'나이키형 CEO',subtitle:'문화·상징 브랜드형',score:t=>t.BRAND*1.0+t.TRUST*.45+t.GROWTH*.3+t.PEOPLE*.15,tags:['상징성','문화','브랜드 충성'],
+path:[['제품 경험','제품 자체에서 기본적인 신뢰를 확보한다.'],['브랜드 메시지','광고·스토리로 이름에 의미를 더한다.'],['정체성 결합','고객이 브랜드를 자기 이미지와 연결한다.'],['상징적 지위','기능이 비슷해도 특정 브랜드를 고집하게 된다.']],
+text:'당신은 가격이나 기능 경쟁만으로는 오래 기억되기 어렵다고 판단했습니다. 브랜드를 하나의 문화와 정체성으로 만들어 고객이 제품뿐 아니라 그 이름 자체를 선택하게 하는 방향입니다.',
+caseWhy:'나이키는 운동화의 기능뿐 아니라 스포츠·도전·스타일 같은 이미지를 브랜드와 결합해 강한 상징성을 만든 사례로 설명할 수 있습니다. 고객이 제품을 자기 정체성과 연결하면 비슷한 기능의 대체재가 있어도 브랜드 자체를 선택할 이유가 생깁니다. 당신 역시 제품 이후의 문화와 브랜드 의미를 키우는 선택이 강했습니다.'}
+];
+
+function screen(html,label=''){stepLabel.textContent=label;stage.innerHTML=`<section class="screen">${html}</section>`;document.body.dataset.phase=label||'transition';window.scrollTo({top:0,behavior:'smooth'})}
+function safe(s){return String(s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function apply(delta){for(const[k,v]of Object.entries(delta))S.traits[k]+=v}
+function pct(n,min=8,max=92){return Math.max(min,Math.min(max,Math.round(n)))}
+function answerIndex(qi){return S.answers.find(a=>a.q===qi)?.choice??-1}
+
+/* 발표용 빠른 결과:
+   Space + Enter를 동시에 누르면 지금까지 직접 고른 선택은 유지하고,
+   아직 답하지 않은 문항만 무작위 선택한 뒤 즉시 결과 화면으로 이동한다. */
+let presentationFastFinishLock=false;
+function presentationFastFinish(){
+  if(presentationFastFinishLock) return;
+  if(!S.company || !S.product) return;
+  if(S.answers.length>=questions.length) return;
+
+  presentationFastFinishLock=true;
+
+  const answered = new Set(S.answers.map(a=>a.q));
+  for(let qi=0; qi<questions.length; qi++){
+    if(answered.has(qi)) continue;
+    const q = questions[qi];
+    const idx = Math.floor(Math.random()*q.choices.length);
+    apply(q.choices[idx][2]);
+    S.answers.push({q:qi,choice:idx,title:q.title,label:q.choices[idx][0],auto:true});
+  }
+
+  S.answers.sort((a,b)=>a.q-b.q);
+  S.q=questions.length;
+
+  screen(`<div class="flash"><div class="small">발표용 빠른 결과 계산</div><div class="big" style="margin-top:22px">선택 완료</div><div class="small">직접 고른 선택은 유지하고,<br>남은 문항만 무작위로 채웠습니다.</div></div>`,'결과 계산');
+  setTimeout(()=>{
+    presentationFastFinishLock=false;
+    showResult();
+  },500);
+}
+
+function intro(){screen(`<div class="hero"><div><h1>보통명사</h1><div class="sub">내가 회사를 차린다면, 어떤 사장이 될까?</div><button class="primary" onclick="startPrompt()">회사를 만들어본다&nbsp;&nbsp;→</button></div></div>`)}
+function startPrompt(){screen(`<div class="card setupCard"><div class="kicker">START</div><h2>회사 하나를 만들 수 있다면,<br>정말 만들어보고 싶습니까?</h2><p class="desc">정답은 없습니다. 실제 대표라면 할 것 같은 결정을 고르면 됩니다.</p><div class="grid2"><button class="option" onclick="companyName()"><b>그렇다</b><span>한 번 제대로 만들어본다.</span></button><button class="option" onclick="companyName()"><b>잘 모르겠지만 해본다</b><span>결과가 어디로 가는지 본다.</span></button></div></div>`,'시작')}
+function companyName(){screen(`<div class="card setupCard companySetup"><div class="kicker">01 · COMPANY</div><h2>먼저 회사의 이름을 정해주세요.</h2><p class="desc">이 이름은 12년 뒤 결과 화면까지 그대로 사용됩니다.</p><input id="companyInput" class="input" maxlength="24" placeholder="예: Aster"><div class="actions"><button class="primary" onclick="saveCompany()">다음</button></div></div>`,'회사 만들기');setTimeout(()=>document.getElementById('companyInput')?.focus(),50)}
+function saveCompany(){const v=document.getElementById('companyInput').value.trim();if(!v)return document.getElementById('companyInput').focus();S.company=v;industry()}
+function industry(){const items=Object.entries(industryMap).map(([k,v])=>`<button class="option" onclick="saveIndustry('${k}')"><b>${k}</b><span>${v}</span></button>`).join('');screen(`<div class="card setupCard industrySetup"><div class="kicker">02 · FIELD</div><h2>${safe(S.company)}는 무엇을 만드는 회사인가요?</h2><p class="desc">분야는 질문의 분위기와 결과 화면의 표현에 반영됩니다.</p><div class="grid2">${items}</div></div>`,'회사 만들기')}
+function saveIndustry(v){S.industry=v;productName()}
+function productName(){screen(`<div class="card setupCard"><div class="kicker">03 · FIRST PRODUCT</div><h2>처음 세상에 내놓을 것은?</h2><p class="desc">${safe(S.industry)} 분야의 첫 제품 또는 서비스 이름을 정해주세요.</p><input id="productInput" class="input" maxlength="24" placeholder="예: Nova"><div class="actions"><button class="primary" onclick="saveProduct()">시작</button></div></div>`,'회사 만들기');setTimeout(()=>document.getElementById('productInput')?.focus(),50)}
+function saveProduct(){const v=document.getElementById('productInput').value.trim();if(!v)return document.getElementById('productInput').focus();S.product=v;flash('20XX년 3월','직원 1명.<br><br>당신뿐이다.',()=>{S.q=0;renderQuestion()})}
+function flash(big,small,next){screen(`<div class="flash"><div class="big">${big}</div><div class="small">${small}</div></div>`,'');setTimeout(next,1250)}
+
+function renderQuestion(){
+ const i=S.q,q=questions[i];
+ const brandedText=q.text.replaceAll('BRAND',safe(S.product));
+ const cs=q.choices.map((c,idx)=>`<button class="choice" onclick="choose(${idx})"><span class="letter">${'ABCD'[idx]}</span><strong>${c[0]}</strong><p>${c[1]}</p></button>`).join('');
+ screen(`<div class="card questionCard"><div class="qmeta"><span>${q.year}</span><span>Q${i+1} / ${questions.length}</span></div><div class="progress"><i style="width:${i/questions.length*100}%"></i></div><div class="questionCopy"><div class="kicker">${q.title}</div><div class="qtext">${brandedText.split('\n')[0]}</div><div class="context">${brandedText.split('\n').slice(1).join('\n')}</div></div><div class="choices">${cs}</div></div>`,`질문 ${i+1} / ${questions.length}`)
+}
+function choose(idx){
+ const q=questions[S.q];apply(q.choices[idx][2]);S.answers.push({q:S.q,choice:idx,title:q.title,label:q.choices[idx][0]});const just=S.q;S.q++;
+ screen(`<div class="flash"><div class="small">결정되었습니다.</div></div>`,`질문 ${Math.min(S.q,15)} / 15`);
+ setTimeout(()=>{if(just===3)return timeJump1();if(just===7)return timeJump2();if(just===11)return timeJump3();if(just===14)return preResult();renderQuestion()},420)
+}
+function timeJump1(){screen(`<div class="flash"><div class="small">첫 직원이 들어왔다.<br>첫 고객이 생겼다.<br>첫 환불도 있었다.<br>월급날이 찾아왔다.<br><br>그리고 회사는 아직 살아 있다.</div><div class="big" style="margin-top:30px">3년 후</div><div class="small">직원 23명.</div></div>`,'');setTimeout(renderQuestion,2200)}
+function timeJump2(){screen(`<div class="flash"><div class="timeline"><span>23명</span><span>37명</span><span>61명</span><span>104명</span></div><div class="big" style="margin-top:28px">설립 6년 차</div><div class="small">직원 118명.<br><br>더 이상 모든 직원의 이름을 알 수 없다.</div></div>`,'');setTimeout(renderQuestion,2200)}
+function timeJump3(){screen(`<div class="flash"><div class="small">첫 제품 · 첫 직원 · 첫 문제 · 첫 투자 · 첫 해외 주문</div><div class="big" style="margin-top:28px">설립 10년 차</div><div class="small">직원 1,240명.</div></div>`,'');setTimeout(renderQuestion,1900)}
+function preResult(){screen(`<div class="flash"><div class="small">12년 동안 15번의 중요한 결정을 내렸습니다.</div><div class="big" style="margin-top:24px">그 결정들은<br>생각보다 서로 닮아 있었습니다.</div></div>`,'결과 계산');setTimeout(yearRoll,1900)}
+function yearRoll(){screen(`<div class="flash"><div class="timeline"><span>1년</span><span>2년</span><span>4년</span><span>7년</span><span>9년</span><span>12년</span></div><div class="big" style="margin-top:34px">12년 후</div><div class="small">${safe(S.company)}</div></div>`,'결과');setTimeout(showResult,1700)}
+
+function hiddenCommonNoun(){const t=S.traits,q14=answerIndex(13),q9=answerIndex(8);return t.BRAND>=8&&t.GROWTH>=8&&(t.OPEN>=5||q9!==3)&&[1,2,3].includes(q14)}
+function hiddenLegacy(){const t=S.traits;return t.SOCIAL>=5&&t.TRUST>=8&&(t.PEOPLE>=5||t.OPEN>=5)&&t.EFFICIENCY>=2}
+function chooseType(){return[...types].sort((a,b)=>b.score(S.traits)-a.score(S.traits))[0]}
+function metrics(typeName){
+ const t=S.traits;let share=pct(20+t.GROWTH*1.5+t.BRAND*.6+t.CONTROL*.35-t.OPEN*.1,12,68);
+ let repurchase=pct(48+t.TRUST*1.25+t.PRODUCT*.85-t.GROWTH*.25,35,91),awareness=pct(38+t.BRAND*2+t.GROWTH*.75,28,96),overseas=pct(9+t.GROWTH*.55+t.OPEN*.9,5,52);
+ let employees=Math.round(420+t.GROWTH*110+t.PEOPLE*35+t.RISK*28),revenue=Math.round(900+t.GROWTH*360+t.BRAND*125+t.EFFICIENCY*150);
+ if(typeName.includes('제품')){share-=6;repurchase+=6}if(typeName.includes('효율')){revenue+=900;employees=Math.max(280,employees-260)}if(typeName.includes('사람'))employees+=220;if(typeName.includes('플랫폼'))share+=7;
+ return{share:pct(share,8,74),repurchase:pct(repurchase,30,94),awareness:pct(awareness,24,98),overseas:pct(overseas,3,59),employees,revenue}
+}
+function fmt(n){return n.toLocaleString('ko-KR')}
+function flowHtml(type){return type.path.map((x,i)=>`${i?'<div class="flowArrow">→</div>':''}<div class="flowNode"><small>STEP ${i+1}</small><strong>${x[0]}</strong><p>${x[1]}</p></div>`).join('')}
+
+function showResult(){
+ const type=chooseType(),m=metrics(type.name),common=hiddenCommonNoun(),legacy=hiddenLegacy();
+ const hiddenBanner=common?`<button class="primary" onclick="showCommonNoun()">결과에 이상한 변화가 있습니다</button>`:legacy?`<button class="primary" onclick="showLegacy()">마지막 기록 보기</button>`:'';
+ screen(`<div class="card resultCard">
+ <div class="resultHero"><div class="eyebrow">12 YEARS LATER</div><h2>${safe(S.company)}</h2><div class="company">${safe(S.industry)} · 첫 제품 ${safe(S.product)}</div></div>
+ <div class="metrics"><div class="metric"><span>직원</span><b>${fmt(m.employees)}명</b></div><div class="metric"><span>연매출</span><b>${fmt(m.revenue)}억 원</b></div><div class="metric"><span>시장점유율</span><b>${m.share}%</b></div><div class="metric"><span>재구매율</span><b>${m.repurchase}%</b></div><div class="metric"><span>브랜드 인지도</span><b>${m.awareness}%</b></div><div class="metric"><span>해외매출 비중</span><b>${m.overseas}%</b></div></div>
+ <div class="typeBox"><div class="kicker">YOUR CEO TYPE</div><div class="typeName">${type.name}</div><div class="typeSubtitle">${type.subtitle}</div><div class="typeText">${type.text}</div><div class="traits">${type.tags.map(x=>`<span class="pill">${x}</span>`).join('')}</div>
+ <div class="marketPower"><div class="marketPowerHead"><span>독점이 되는 과정</span><em>MARKET POWER FLOW</em></div><div class="marketFlow">${flowHtml(type)}</div>
+ <div class="caseLink"><div class="caseHead"><span>왜 이 기업과 비슷한가</span><b>${type.name.replace('형 CEO','')}</b></div><p>${type.caseWhy}</p></div></div>
+ </div>
+ <div class="actions" style="justify-content:space-between;flex-wrap:wrap"><div>${hiddenBanner}</div><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="ghost" onclick="showReview()">내가 만든 결정</button><button class="ghost" onclick="restart()">다시 창업하기</button></div></div>
+ </div>`,'결과')
+}
+function showCommonNoun(){
+ const m=metrics(chooseType().name);
+ screen(`<div class="card hiddenSequence"><div class="kicker">SPECIAL RESULT</div><div class="quoteWall"><div>“그거 그냥 ${safe(S.product)}하면 되잖아.”</div><div>“나 어제 ${safe(S.product)}했음.”</div><div>“이 제품 ${safe(S.product)} 되나요?”</div><div>“${safe(S.product)} 가능한 기기 추천 좀.”</div></div><p class="desc">사람들은 어느 순간 당신의 회사를 이야기하지 않게 되었습니다.<br><br>대신 당신의 이름으로 <b>그 행동 자체를 부르기 시작했습니다.</b></p><div class="hiddenTitle">보통명사</div><p class="desc"><b>당신은 ‘보통명사형 기업’의 사장이 되었습니다.</b></p><div class="metrics"><div class="metric"><span>시장점유율</span><b>${m.share}%</b></div><div class="metric"><span>브랜드 최초상기도</span><b>${pct(m.awareness+7,50,99)}%</b></div><div class="metric"><span>경쟁사 수</span><b>${Math.max(3,Math.round(14-S.traits.CONTROL/3))}개</b></div></div><p class="note">시장을 전부 차지한 것은 아닙니다. 경쟁사는 여전히 존재합니다. 다만 사람들은 이 제품군을 떠올릴 때 가장 먼저 당신의 이름을 말합니다.</p><div class="actions"><button class="ghost" onclick="showReview()">내가 만든 결정</button><button class="ghost" onclick="restart()">다시 창업하기</button></div></div>`,'특수 결과')
+}
+function showLegacy(){
+ screen(`<div class="card hiddenSequence"><div class="kicker">SPECIAL RESULT</div><div class="hiddenTitle" style="font-size:clamp(50px,8vw,90px)">남긴 것</div><p class="desc">${safe(S.company)}의 이름은 언젠가 사라질 수도 있습니다.<br>하지만 회사가 만든 것까지 함께 사라지지는 않습니다.</p><div class="metrics"><div class="metric"><span>장학·교육 지원</span><b>${fmt(9200+S.traits.SOCIAL*1840)}명</b></div><div class="metric"><span>공개 프로젝트 참여 조직</span><b>${120+S.traits.OPEN*23}개</b></div><div class="metric"><span>지역·공공 프로젝트</span><b>${8+S.traits.SOCIAL*4}건</b></div></div><p class="note">이 결과는 ‘최고 엔딩’이 아닙니다. 당신이 반복해서 선택한 장기 판단의 한 형태입니다.</p><div class="actions"><button class="ghost" onclick="showReview()">내가 만든 결정</button><button class="ghost" onclick="restart()">다시 창업하기</button></div></div>`,'특수 결과')
+}
+function showReview(){
+ const rows=S.answers.map((a,i)=>{const q=questions[a.q],c=q.choices[a.choice];return`<div class="reviewRow"><small>Q${i+1} · ${q.title}</small><b>${c[0]}</b><span>${c[1]}</span></div>`}).join('');
+ screen(`<div class="card"><div class="kicker">YOUR DECISIONS</div><h2>내가 만든 결정</h2><p class="desc">12년 동안 반복해서 내린 판단을 한 화면에서 정리했습니다.</p><div class="review">${rows}</div><div class="actions"><button class="ghost" onclick="showResult()">결과로 돌아가기</button><button class="primary" onclick="restart()">다시 창업하기</button></div></div>`,'선택 기록')
+}
+function restart(){Object.assign(S,{company:'',industry:'IT·소프트웨어',product:'',answers:[],traits:{PRODUCT:0,GROWTH:0,BRAND:0,EFFICIENCY:0,PEOPLE:0,TRUST:0,OPEN:0,CONTROL:0,RISK:0,SOCIAL:0},q:0});intro()}
+
+function scaleUI(){
+ const app=document.getElementById('app');
+ if(window.innerWidth<=700){app.style.removeProperty('--ui-scale');return}
+ const s=Math.min(window.innerWidth/1440,window.innerHeight/900,1.18);
+ app.style.setProperty('--ui-scale',String(s))
+}
+window.addEventListener('resize',scaleUI);
+
+const pressedKeys=new Set();
+document.addEventListener('keydown',e=>{
+  const key=e.code||e.key;
+  pressedKeys.add(key);
+
+  const spaceDown=pressedKeys.has('Space') || pressedKeys.has(' ');
+  const enterDown=pressedKeys.has('Enter') || pressedKeys.has('NumpadEnter');
+
+  if(spaceDown && enterDown && String(document.body.dataset.phase||'').startsWith('질문')){
+    e.preventDefault();
+    presentationFastFinish();
+    return;
+  }
+
+  if(e.key==='Enter' && !spaceDown){
+    if(document.activeElement?.id==='companyInput')saveCompany();
+    if(document.activeElement?.id==='productInput')saveProduct();
+  }
+});
+document.addEventListener('keyup',e=>{
+  pressedKeys.delete(e.code||e.key);
+  if(e.code==='Space') pressedKeys.delete(' ');
+});
+window.addEventListener('blur',()=>pressedKeys.clear());
+
+scaleUI();intro();
+</script>
+</body>
+</html>
